@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/dhamith93/systats/exec"
+	"github.com/NubeIO/lib-system/exec"
 )
 
 func isServiceRunning(service string) bool {

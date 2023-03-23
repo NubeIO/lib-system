@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dhamith93/systats/internal/fileops"
-	"github.com/dhamith93/systats/internal/strops"
+	"github.com/NubeIO/lib-system/internal/fileops"
+	"github.com/NubeIO/lib-system/internal/strops"
 )
 
 // CPU holds information on CPU and CPU usage

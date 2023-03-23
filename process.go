@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dhamith93/systats/exec"
-	"github.com/dhamith93/systats/internal/fileops"
+	"github.com/NubeIO/lib-system/exec"
+	"github.com/NubeIO/lib-system/internal/fileops"
 )
 
 // Process holds information on single process

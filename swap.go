@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dhamith93/systats/internal/fileops"
-	"github.com/dhamith93/systats/internal/strops"
-	"github.com/dhamith93/systats/internal/unitconv"
+	"github.com/NubeIO/lib-system/internal/fileops"
+	"github.com/NubeIO/lib-system/internal/strops"
+	"github.com/NubeIO/lib-system/internal/unitconv"
 )
 
 // Swap holds information on system swap usage

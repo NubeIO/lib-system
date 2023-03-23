@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dhamith93/systats/exec"
-	"github.com/dhamith93/systats/internal/fileops"
+	"github.com/NubeIO/lib-system/exec"
+	"github.com/NubeIO/lib-system/internal/fileops"
 )
 
 // System holds operating system information

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dhamith93/systats/internal/logger"
+	"github.com/NubeIO/lib-system/internal/logger"
 )
 
 // ReadFile read from given file

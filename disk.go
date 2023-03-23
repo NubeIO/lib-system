@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dhamith93/systats/exec"
+	"github.com/NubeIO/lib-system/exec"
 )
 
 // Disk holds information on single disk
