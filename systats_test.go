@@ -36,7 +36,8 @@ func TestSyStats_GetDisksPretty(t *testing.T) {
 
 func TestSyStats_GetTopProcesses(t *testing.T) {
 	s := New()
-	disks, err := s.GetTopProcesses(2, "mem")
+	disks, err := s.GetTopProcesses(2, "memory")
+	fmt.Println(disks)
 	fmt.Println(err)
 	if err != nil {
 		return
