@@ -13,3 +13,12 @@ func TestSyStats_GetSystem(t *testing.T) {
 	}
 	pprint.PrintJOSN(disks)
 }
+
+func TestSyStats_GetMemoryUsage(t *testing.T) {
+	s := New()
+	disks, err := s.GetMemoryUsage()
+	if err != nil {
+		return
+	}
+	pprint.PrintJOSN(disks)
+}

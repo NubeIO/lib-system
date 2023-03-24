@@ -28,6 +28,10 @@ func New() SyStats {
 	}
 }
 
+func (systats *SyStats) GetMemoryUsage() (*MemoryUsage, error) {
+	return getMemoryUsage(systats)
+}
+
 func (systats *SyStats) GetMemory(unit string) (Memory, error) {
 	return getMemory(systats, unit)
 }
