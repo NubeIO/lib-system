@@ -94,7 +94,7 @@ func processLoggedInUsers(system *System, systats *SyStats) {
 	for _, line := range split {
 		loggedInInfo := strings.Fields(line)
 		if len(loggedInInfo) >= 5 {
-			loggedInTime, _ := time.Parse(timeLayout, loggedInInfo[2]+" "+loggedInInfo[3])
+			loggedInTime, _ := time.Parse(timeLayout, loggedInInfo[2]+" "+loggedInInfo[3]+":00")
 			system.LoggedInUsers = append(system.LoggedInUsers, User{
 				Username:     loggedInInfo[0],
 				LoggedInTime: loggedInTime,
