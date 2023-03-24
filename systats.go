@@ -1,5 +1,7 @@
 package systats
 
+import "errors"
+
 const (
 	Byte     string = "B"
 	Kilobyte string = "KB"
@@ -61,6 +63,16 @@ func (systats *SyStats) IsServiceRunning(service string) bool {
 }
 
 func (systats *SyStats) GetTopProcesses(count int, sort string) ([]Process, error) {
+	var correctSort bool
+	if sort == "memory" {
+		correctSort = true
+	}
+	if sort == "cpu" {
+		correctSort = true
+	}
+	if !correctSort {
+		return nil, errors.New("incorrect sort type try: cpu, memory")
+	}
 	if sort == "cpu" {
 		sort = "-pcpu"
 	}
