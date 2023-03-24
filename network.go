@@ -15,18 +15,18 @@ import (
 
 // Network holds interface information
 type Network struct {
-	Interface string
-	Ip        string
-	Usage     NetworkUsage
-	Time      int64
+	Interface string       `json:"interface"`
+	Ip        string       `json:"ip"`
+	Usage     NetworkUsage `json:"usage"`
+	Time      int64        `json:"time"`
 }
 
 // NetworkUsage holds Tx/Rx usage information
 type NetworkUsage struct {
-	RxBytes   uint64
-	TxBytes   uint64
-	RxPackets uint64
-	TxPackets uint64
+	RxBytes   uint64 `json:"rx_bytes"`
+	TxBytes   uint64 `json:"tx_bytes"`
+	RxPackets uint64 `json:"rx_packets"`
+	TxPackets uint64 `json:"tx_packets"`
 }
 
 func getNetworks() ([]Network, error) {
