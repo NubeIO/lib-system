@@ -8,6 +8,43 @@ import (
 	"github.com/NubeIO/lib-system/exec"
 )
 
+type DiskUsagePretty struct {
+	Size      string `json:"size"`
+	Used      string `json:"used"`
+	Available string `json:"available"`
+	Usage     string `json:"usage"`
+}
+
+type DiskPretty struct {
+	FileSystem string          `json:"file_system"`
+	Type       string          `json:"type"`
+	MountedOn  string          `json:"mounted_on"`
+	Usage      DiskUsagePretty `json:"usage"`
+}
+
+func discUsagePretty() ([]DiskPretty, error) {
+	var out []DiskPretty
+	disks, err := getDisks()
+	if err != nil {
+		return nil, err
+	}
+	for _, disk := range disks {
+		newDisk := DiskPretty{
+			FileSystem: disk.FileSystem,
+			Type:       disk.Type,
+			MountedOn:  disk.MountedOn,
+			Usage: DiskUsagePretty{
+				Size:      bytePretty(disk.Usage.Size),
+				Used:      bytePretty(disk.Usage.Used),
+				Available: bytePretty(disk.Usage.Available),
+				Usage:     disk.Usage.Usage,
+			},
+		}
+		out = append(out, newDisk)
+	}
+	return out, nil
+}
+
 // Disk holds information on single disk
 type Disk struct {
 	FileSystem string     `json:"file_system"`

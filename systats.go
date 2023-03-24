@@ -74,6 +74,10 @@ func (systats *SyStats) GetDisks() ([]Disk, error) {
 	return getDisks()
 }
 
+func (systats *SyStats) GetDisksPretty() ([]DiskPretty, error) {
+	return discUsagePretty()
+}
+
 func (systats *SyStats) IsPortOpen(port int) bool {
 	return isPortOpen(port)
 }

@@ -22,3 +22,12 @@ func TestSyStats_GetMemoryUsage(t *testing.T) {
 	}
 	pprint.PrintJOSN(disks)
 }
+
+func TestSyStats_GetDisksPretty(t *testing.T) {
+	s := New()
+	disks, err := s.GetDisksPretty()
+	if err != nil {
+		return
+	}
+	pprint.PrintJOSN(disks)
+}

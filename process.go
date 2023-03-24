@@ -1,6 +1,7 @@
 package systats
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 
@@ -18,6 +19,22 @@ type Process struct {
 }
 
 func getTopProcesses(count int, sort string) ([]Process, error) {
+	if count == 0 {
+		count = 1
+	}
+	var correctSort bool
+	if sort == "" {
+		sort = "memory"
+	}
+	if sort != "memory" {
+		correctSort = true
+	}
+	if sort != "cpu" {
+		correctSort = true
+	}
+	if !correctSort {
+		return nil, errors.New("incorrect sort type try: cpu, memory")
+	}
 	result := exec.Execute("ps", "-eo", "pid,%cpu,%mem,user", "--no-headers", "--sort="+sort)
 	resultArray := strings.Split(result, "\n")
 	out := []Process{}
