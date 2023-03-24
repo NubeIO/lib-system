@@ -1,6 +1,7 @@
 package systats
 
 import (
+	"fmt"
 	pprint "github.com/NubeIO/lib-system/print"
 	"testing"
 )
@@ -26,6 +27,7 @@ func TestSyStats_GetMemoryUsage(t *testing.T) {
 func TestSyStats_GetDisksPretty(t *testing.T) {
 	s := New()
 	disks, err := s.GetDisksPretty()
+	fmt.Println(err)
 	if err != nil {
 		return
 	}
