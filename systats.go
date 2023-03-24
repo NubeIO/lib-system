@@ -9,19 +9,19 @@ const (
 
 // SyStats holds information used to collect data
 type SyStats struct {
-	MeminfoPath     string
-	StatFilePath    string
-	CPUinfoFilePath string
-	VersionPath     string
-	EtcPath         string
-	UptimePath      string
+	MemInfoPath     string `json:"mem_info_path"`
+	StatFilePath    string `json:"stat_file_path"`
+	CPUInfoFilePath string `json:"cpu_info_file_path"`
+	VersionPath     string `json:"version_path"`
+	EtcPath         string `json:"etc_path"`
+	UptimePath      string `json:"uptime_path"`
 }
 
 func New() SyStats {
 	return SyStats{
-		MeminfoPath:     "/proc/meminfo",
+		MemInfoPath:     "/proc/meminfo",
 		StatFilePath:    "/proc/stat",
-		CPUinfoFilePath: "/proc/cpuinfo",
+		CPUInfoFilePath: "/proc/cpuinfo",
 		VersionPath:     "/proc/version",
 		EtcPath:         "/etc/",
 		UptimePath:      "/proc/uptime",

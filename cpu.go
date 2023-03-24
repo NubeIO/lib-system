@@ -12,13 +12,13 @@ import (
 
 // CPU holds information on CPU and CPU usage
 type CPU struct {
-	LoadAvg   int
-	CoreAvg   []int
-	Model     string
-	NoOfCores int
-	Freq      string
-	Cache     string
-	Time      int64
+	LoadAvg   int    `json:"load_avg"`
+	CoreAvg   []int  `json:"core_avg"`
+	Model     string `json:"model"`
+	NoOfCores int    `json:"no_of_cores"`
+	Freq      string `json:"freq"`
+	Cache     string `json:"cache"`
+	Time      int64  `json:"time"`
 }
 
 func getCPU(systats *SyStats, milliseconds int) (CPU, error) {
@@ -36,7 +36,7 @@ func getCPU(systats *SyStats, milliseconds int) (CPU, error) {
 
 	processStatFileContents(&output, &statStr1, &statStr2)
 
-	cpuinfoStr, err := fileops.ReadFileWithError(systats.CPUinfoFilePath)
+	cpuinfoStr, err := fileops.ReadFileWithError(systats.CPUInfoFilePath)
 	if err != nil {
 		return output, err
 	}

@@ -10,11 +10,11 @@ import (
 
 // Process holds information on single process
 type Process struct {
-	Pid      int
-	ExecPath string
-	User     string
-	CPUUsage float32
-	MemUsage float32
+	Pid      int     `json:"pid"`
+	ExecPath string  `json:"exec_path"`
+	User     string  `json:"user"`
+	CPUUsage float32 `json:"cpu_usage"`
+	MemUsage float32 `json:"mem_usage"`
 }
 
 func getTopProcesses(count int, sort string) ([]Process, error) {

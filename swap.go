@@ -12,19 +12,19 @@ import (
 
 // Swap holds information on system swap usage
 type Swap struct {
-	PercentageUsed float64
-	Free           uint64
-	Used           uint64
-	Time           int64
-	Total          uint64
-	Unit           string
+	PercentageUsed float64 `json:"percentage_used"`
+	Free           uint64  `json:"free"`
+	Used           uint64  `json:"used"`
+	Time           int64   `json:"time"`
+	Total          uint64  `json:"total"`
+	Unit           string  `json:"unit"`
 }
 
 func getSwap(systats *SyStats, unit string) (Swap, error) {
 	output := Swap{}
 	output.Unit = unit
 
-	meminfoStr, err := fileops.ReadFileWithError(systats.MeminfoPath)
+	meminfoStr, err := fileops.ReadFileWithError(systats.MemInfoPath)
 	if err != nil {
 		return output, err
 	}
