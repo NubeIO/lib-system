@@ -52,7 +52,8 @@ func diskUsage(path string) ([]MountingPoint, error) {
 	for _, outputLine := range outputLines {
 		mountingPointInfoSlice := FormatStatSlice(strings.Split(outputLine, " "))
 		if len(mountingPointInfoSlice) > 0 {
-			if mountingPointInfoSlice[0][:4] == "/dev" && mountingPointInfoSlice[0][:9] != "/dev/loop" {
+			if strings.HasPrefix(mountingPointInfoSlice[0], "/dev") &&
+				!strings.HasPrefix(mountingPointInfoSlice[0], "/dev/loop") {
 				var mountingPoint MountingPoint
 				mountingPoint.FileSystem = mountingPointInfoSlice[len(mountingPointInfoSlice)-1]
 				mountingPoint.Size = mountingPointInfoSlice[1]
