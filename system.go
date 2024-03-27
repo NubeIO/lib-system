@@ -29,26 +29,26 @@ type User struct {
 }
 
 func getSystem(systats *SyStats) (System, error) {
-	output := System{}
+	system := System{}
 
-	systemOS, err := getOperatingSystem(&output, systats)
+	systemOS, err := getOperatingSystem(systats)
 	if err != nil {
-		return output, err
+		return system, err
 	}
-	output.OS = systemOS
-	output.Kernel = getKernel(systats.VersionPath)
-	output.HostName = strings.TrimSpace(fileops.ReadFile(systats.EtcPath + "hostname"))
+	system.OS = systemOS
+	system.Kernel = getKernel(systats.VersionPath)
+	system.HostName = strings.TrimSpace(fileops.ReadFile(systats.EtcPath + "hostname"))
 
-	err = processSystemBootTimes(&output, systats)
+	err = processSystemBootTimes(&system)
 	if err != nil {
-		return output, err
+		return system, err
 	}
-	processLoggedInUsers(&output, systats)
-	output.Time = time.Now()
-	return output, nil
+	processLoggedInUsers(&system)
+	system.Time = time.Now()
+	return system, nil
 }
 
-func getOperatingSystem(system *System, systats *SyStats) (string, error) {
+func getOperatingSystem(systats *SyStats) (string, error) {
 	path := systats.EtcPath + "/os-release"
 	content, err := fileops.ReadFileWithError(path)
 	if err != nil {
@@ -72,7 +72,7 @@ func getOperatingSystem(system *System, systats *SyStats) (string, error) {
 	return systemOS, nil
 }
 
-func processSystemBootTimes(system *System, systats *SyStats) error {
+func processSystemBootTimes(system *System) error {
 	tt, err := getBootTime()
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func processSystemBootTimes(system *System, systats *SyStats) error {
 	return nil
 }
 
-func processLoggedInUsers(system *System, systats *SyStats) {
+func processLoggedInUsers(system *System) {
 	split := strings.Split(exec.Execute("who"), "\n")
 	system.LoggedInUsers = []User{}
 	for _, line := range split {
@@ -149,8 +149,8 @@ func parseTimeWithTimezone(layout, value, zone string) (time.Time, error) {
 	return time.ParseInLocation(layout, value, loc)
 }
 
-// TimeSince returns in a human readable format the elapsed time
-// eg 12 hours, 12 days
+// TimeSince returns in a human-readable format the elapsed time
+// e.g. 12 hours, 12 days
 func timeSince(t time.Time) string {
 	return elapsed.Time(t)
 }
