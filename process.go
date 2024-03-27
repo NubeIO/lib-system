@@ -23,7 +23,7 @@ func getTopProcesses(count int, sort string) ([]Process, error) {
 	}
 	result := exec.Execute("ps", "-eo", "pid,%cpu,%mem,user", "--no-headers", "--sort="+sort)
 	resultArray := strings.Split(result, "\n")
-	out := []Process{}
+	var out []Process
 	for i, process := range resultArray {
 		if i+1 > count {
 			break

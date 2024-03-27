@@ -4,6 +4,7 @@ import (
 	"github.com/NubeIO/lib-system/exec"
 	"github.com/NubeIO/lib-system/internal/fileops"
 	"github.com/rvflash/elapsed"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ type System struct {
 	LastBootDate  time.Time `json:"last_boot_date"`
 	LoggedInUsers []User    `json:"logged_in_users"`
 	Time          time.Time `json:"time"`
-	TimeZone      string    `json:"time_zone"`
+	Timezone      string    `json:"timezone"`
 }
 
 // User holds logged in user information
@@ -49,14 +50,14 @@ func getSystem(systats *SyStats) (System, error) {
 }
 
 func getOperatingSystem(systats *SyStats) (string, error) {
-	path := systats.EtcPath + "/os-release"
-	content, err := fileops.ReadFileWithError(path)
+	p := path.Join(systats.EtcPath, "os-release")
+	content, err := fileops.ReadFileWithError(p)
 	if err != nil {
-		path, err = fileops.FindFileWithNameLike(systats.EtcPath, "-release")
+		p, err = fileops.FindFileWithNameLike(systats.EtcPath, "-release")
 		if err != nil {
 			return "", err
 		}
-		content = fileops.ReadFile(path)
+		content = fileops.ReadFile(p)
 	}
 
 	split := strings.Split(content, "\n")
@@ -83,7 +84,7 @@ func processSystemBootTimes(system *System) error {
 	if err != nil {
 		return err
 	}
-	system.TimeZone = tz
+	system.Timezone = tz
 	return nil
 }
 
@@ -94,7 +95,7 @@ func processLoggedInUsers(system *System) {
 		loggedInInfo := strings.Fields(line)
 		if len(loggedInInfo) >= 5 {
 			timeAdd := loggedInInfo[2] + " " + loggedInInfo[3] + ":00"
-			loggedInTime, _ := parseTimeWithTimezone(timeLayout, timeAdd, system.TimeZone)
+			loggedInTime, _ := parseTimeWithTimezone(timeLayout, timeAdd, system.Timezone)
 			system.LoggedInUsers = append(system.LoggedInUsers, User{
 				Username:     loggedInInfo[0],
 				LoggedInTime: loggedInTime,
