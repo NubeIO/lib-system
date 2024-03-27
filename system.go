@@ -4,6 +4,7 @@ import (
 	"github.com/NubeIO/lib-system/exec"
 	"github.com/NubeIO/lib-system/internal/fileops"
 	"github.com/rvflash/elapsed"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -18,7 +19,7 @@ type System struct {
 	LastBootDate  time.Time `json:"last_boot_date"`
 	LoggedInUsers []User    `json:"logged_in_users"`
 	Time          time.Time `json:"time"`
-	TimeZone      string    `json:"time_zone"`
+	Timezone      string    `json:"timezone"`
 }
 
 // User holds logged in user information
@@ -29,34 +30,34 @@ type User struct {
 }
 
 func getSystem(systats *SyStats) (System, error) {
-	output := System{}
+	system := System{}
 
-	systemOS, err := getOperatingSystem(&output, systats)
+	systemOS, err := getOperatingSystem(systats)
 	if err != nil {
-		return output, err
+		return system, err
 	}
-	output.OS = systemOS
-	output.Kernel = getKernel(systats.VersionPath)
-	output.HostName = strings.TrimSpace(fileops.ReadFile(systats.EtcPath + "hostname"))
+	system.OS = systemOS
+	system.Kernel = getKernel(systats.VersionPath)
+	system.HostName = strings.TrimSpace(fileops.ReadFile(systats.EtcPath + "hostname"))
 
-	err = processSystemBootTimes(&output, systats)
+	err = processSystemBootTimes(&system)
 	if err != nil {
-		return output, err
+		return system, err
 	}
-	processLoggedInUsers(&output, systats)
-	output.Time = time.Now()
-	return output, nil
+	processLoggedInUsers(&system)
+	system.Time = time.Now()
+	return system, nil
 }
 
-func getOperatingSystem(system *System, systats *SyStats) (string, error) {
-	path := systats.EtcPath + "/os-release"
-	content, err := fileops.ReadFileWithError(path)
+func getOperatingSystem(systats *SyStats) (string, error) {
+	p := path.Join(systats.EtcPath, "os-release")
+	content, err := fileops.ReadFileWithError(p)
 	if err != nil {
-		path, err = fileops.FindFileWithNameLike(systats.EtcPath, "-release")
+		p, err = fileops.FindFileWithNameLike(systats.EtcPath, "-release")
 		if err != nil {
 			return "", err
 		}
-		content = fileops.ReadFile(path)
+		content = fileops.ReadFile(p)
 	}
 
 	split := strings.Split(content, "\n")
@@ -72,7 +73,7 @@ func getOperatingSystem(system *System, systats *SyStats) (string, error) {
 	return systemOS, nil
 }
 
-func processSystemBootTimes(system *System, systats *SyStats) error {
+func processSystemBootTimes(system *System) error {
 	tt, err := getBootTime()
 	if err != nil {
 		return err
@@ -83,18 +84,18 @@ func processSystemBootTimes(system *System, systats *SyStats) error {
 	if err != nil {
 		return err
 	}
-	system.TimeZone = tz
+	system.Timezone = tz
 	return nil
 }
 
-func processLoggedInUsers(system *System, systats *SyStats) {
+func processLoggedInUsers(system *System) {
 	split := strings.Split(exec.Execute("who"), "\n")
 	system.LoggedInUsers = []User{}
 	for _, line := range split {
 		loggedInInfo := strings.Fields(line)
 		if len(loggedInInfo) >= 5 {
 			timeAdd := loggedInInfo[2] + " " + loggedInInfo[3] + ":00"
-			loggedInTime, _ := parseTimeWithTimezone(timeLayout, timeAdd, system.TimeZone)
+			loggedInTime, _ := parseTimeWithTimezone(timeLayout, timeAdd, system.Timezone)
 			system.LoggedInUsers = append(system.LoggedInUsers, User{
 				Username:     loggedInInfo[0],
 				LoggedInTime: loggedInTime,
@@ -149,8 +150,8 @@ func parseTimeWithTimezone(layout, value, zone string) (time.Time, error) {
 	return time.ParseInLocation(layout, value, loc)
 }
 
-// TimeSince returns in a human readable format the elapsed time
-// eg 12 hours, 12 days
+// TimeSince returns in a human-readable format the elapsed time
+// e.g. 12 hours, 12 days
 func timeSince(t time.Time) string {
 	return elapsed.Time(t)
 }

@@ -54,5 +54,5 @@ func FindFileWithNameLike(dir string, name string) (string, error) {
 		}
 	}
 
-	return "", errors.New("file " + name + " not found in " + dir)
+	return "", errors.New("file like *" + name + " not found in " + dir)
 }

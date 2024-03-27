@@ -10,6 +10,7 @@ func TestSyStats_GetSystem(t *testing.T) {
 	s := New()
 	disks, err := s.GetSystem()
 	if err != nil {
+		fmt.Println(fmt.Sprintf("Error: %v", err))
 		return
 	}
 	pprint.PrintJOSN(disks)
